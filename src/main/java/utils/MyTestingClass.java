@@ -2,30 +2,28 @@ package utils;
 
 public class MyTestingClass {
     private int id;
-    private String name;
+    private String key;
 
-    public MyTestingClass(String name){
-        this(name, 0);
-    }
-    public MyTestingClass(String name, int id){
-        this.name = name;
+    public MyTestingClass(int id, String key){
         this.id = id;
+        this.key = key;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getKey() {
+        return key;
     }
 
     @Override
     public int hashCode(){
         int hash = 0;
-        for(char c : name.toCharArray()){
+        for(char c : key.toCharArray()){
             hash = c + (31 * hash);
         }
+        hash = (17 * id) + (31 * hash);
         return hash;
     }
 }

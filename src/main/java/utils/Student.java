@@ -3,10 +3,9 @@ package utils;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
 public class Student {
     private int id;
+    @Setter
     private double gpa;
     private char gender;
     private String name;

@@ -8,7 +8,7 @@ public class MyHashTable<K, V> implements MyHashTableInterface<K, V> {
 
     private HashNode<K, V>[] chainArray;
     private static int M = 11; //default number of chains
-    private static final double LOAD_FACTOR_LIMIT = 0.7;
+    private static final double LOAD_FACTOR_LIMIT = 0.75f;
     @Getter
     private int size;
 
@@ -45,7 +45,7 @@ public class MyHashTable<K, V> implements MyHashTableInterface<K, V> {
         int index = hash(key);
         HashNode<K,V> node = chainArray[index];
         while(node != null){
-            if(node.key == key) return node.value;
+            if(node.key.equals(key)) return node.value;
             node = node.next;
         }
         return null;
@@ -56,8 +56,14 @@ public class MyHashTable<K, V> implements MyHashTableInterface<K, V> {
         int index = hash(key);
         V value = null;
         HashNode<K, V> node = chainArray[index];
+        if(node == null) return null;
+        if(node.key.equals(key)) {
+            value = node.value;
+            chainArray[index] = node.next;
+            return value;
+        }
         while(node.next != null){
-            if(node.next.key == key){
+            if(node.next.key.equals(key)){
                 value = node.next.value;
                 node.next = node.next.next;
                 size--;
@@ -78,11 +84,29 @@ public class MyHashTable<K, V> implements MyHashTableInterface<K, V> {
         for (HashNode<K, V> hashNode : chainArray) {
             HashNode<K, V> node = hashNode;
             while (node != null) {
-                if (node.value == value) return node.key;
+                if (node.value.equals(value)) return node.key;
                 node = node.next;
             }
         }
         return null;
+    }
+
+    public int[] bucketsLength(){
+        int[] lengths = new int[chainArray.length];
+        for(int i = 0; i < chainArray.length; i++){
+            lengths[i] = bucketLength(i);
+        }
+        return lengths;
+    }
+
+    int bucketLength(int index){
+        int count = 0;
+        HashNode<K, V> node = chainArray[index];
+        while(node != null){
+            count++;
+            node = node.next;
+        }
+        return count;
     }
 
     private int hash(K key){
@@ -105,7 +129,7 @@ public class MyHashTable<K, V> implements MyHashTableInterface<K, V> {
     private void increaseSize(){
         size = 0;
         HashNode<K, V>[] prev = chainArray;
-        chainArray = new HashNode[chainArray.length * 2];
+        chainArray = new HashNode[chainArray.length * 2 + 1];
         for(HashNode<K, V> node : prev){
             while(node != null){
                 put(node.key, node.value);
