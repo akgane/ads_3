@@ -4,16 +4,22 @@ public class MyApplication {
     public static void main(String[] args) {
         MyBST<Integer, Integer> bst = new MyBST<Integer, Integer>();
 
-        bst.put(12, 91);
-        bst.put(54, 86);
-        bst.put(12, 71);
-        bst.put(26, 63);
-        bst.put(84, 23);
-        bst.put(16, 84);
-        bst.put(6, 7);
+        bst.put(12, 12);
+        bst.put(54, 54);
+        bst.put(26, 26);
+        bst.put(10, 10);
+        bst.put(5, 5);
+        bst.put(84, 84);
+        bst.put(16, 16);
+        bst.put(6, 6);
 
-        System.out.println(bst.get(12));
-        System.out.println(bst.get(16));
-        System.out.println(bst.get(6));
+        bst.inOrder();
+        System.out.println(bst.getSize());
+
+        bst.delete(10);
+
+        bst.inOrder();
+        System.out.println(bst.getSize());
+
     }
 }
